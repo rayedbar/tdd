@@ -1,8 +1,9 @@
 package com.rayed.tdd.template;
 
-import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author rayed
