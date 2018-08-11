@@ -37,7 +37,8 @@ public class TemplateTest {
     @Test
     public void missingValueRaisesException() throws Exception {
         try {
-            new Template("${foo}").evaluate();
+            Template template = new Template("${foo}");
+            template.evaluate();
             fail("evaluate() should throw a MissingValueException if a template variable does not have a value");
         } catch (MissingValueException expected) {
             assertEquals("No value for ${foo}", expected.getMessage());

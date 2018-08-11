@@ -2,7 +2,9 @@ package com.rayed.tdd.template;
 
 import com.rayed.tdd.exceptions.MissingValueException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,9 +43,13 @@ public class Template {
     }
 
     private void checkForMissingValues(String result) {
-        Matcher matcher = Pattern.compile("\\$\\{.+\\}").matcher(result);
-        if (matcher.find()) {
-            throw new MissingValueException("No value for " + matcher.group());
+        Matcher matcher = Pattern.compile("\\$\\{.+?\\}").matcher(result);
+        List<String> matches = new ArrayList<>();
+        while (matcher.find()) {
+            matches.add(matcher.group());
+        }
+        if (!matches.isEmpty()) {
+            throw new MissingValueException("No value for " + String.join(", ", matches));
         }
     }
 }
