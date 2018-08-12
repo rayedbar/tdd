@@ -27,7 +27,7 @@ public class RegexLearningTest {
     @Test
     public void startAndEndTest() {
         String haystack = "The needle shop sells needles";
-        String regex = "(needle)";
+        String regex = "needle";
 
         Matcher matcher = Pattern.compile(regex).matcher(haystack);
 
