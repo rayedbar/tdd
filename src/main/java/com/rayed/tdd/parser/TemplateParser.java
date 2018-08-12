@@ -1,4 +1,4 @@
-    package com.rayed.tdd.parser;
+package com.rayed.tdd.parser;
 
 import java.util.ArrayList;
 import java.util.Collections;
