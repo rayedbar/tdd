@@ -1,6 +1,7 @@
 package com.rayed.tdd.template;
 
 import com.rayed.tdd.exceptions.MissingValueException;
+import com.rayed.tdd.parser.TemplateParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,9 +29,27 @@ public class Template {
     }
 
     public String evaluate() {
-        String result = substituteVariablesWithValues();
-        checkForMissingValues(result);
-        return result;
+        TemplateParser parser = new TemplateParser();
+        List<String> segments = parser.parse(templateText);
+
+        StringBuilder result = new StringBuilder();
+        for (String segment : segments) {
+            append(segment, result);
+        }
+
+        return result.toString();
+    }
+
+    private void append(String segment, StringBuilder result) {
+        if (segment.startsWith("${") && segment.endsWith("}")) {
+            String key = segment.substring(2, segment.length() - 1);
+            if (!variables.containsKey(key)) {
+                throw new MissingValueException("No value for " + segment);
+            }
+            result.append(variables.get(key));
+        } else {
+            result.append(segment);
+        }
     }
 
     private String substituteVariablesWithValues() {
