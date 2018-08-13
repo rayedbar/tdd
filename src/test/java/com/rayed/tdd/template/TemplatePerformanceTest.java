@@ -47,6 +47,4 @@ public class TemplatePerformanceTest {
         assertTrue(time <= expected, "Rendering the template took " + time + "ms while the target was " +
                 expected + "ms");
     }
-
-
 }

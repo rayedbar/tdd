@@ -3,14 +3,11 @@ package com.rayed.tdd.parser;
 import com.rayed.tdd.segments.PlainText;
 import com.rayed.tdd.segments.Segment;
 import com.rayed.tdd.segments.Variable;
-import com.rayed.tdd.template.Template;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.rayed.tdd.template.Template.*;
 
 /**
  * @author rayed
@@ -77,5 +74,9 @@ public class TemplateParser {
         if (segments.isEmpty()) {
             segments.add("");
         }
+    }
+
+    private boolean isVariable(String segment) {
+        return segment.startsWith("${") && segment.endsWith("}");
     }
 }

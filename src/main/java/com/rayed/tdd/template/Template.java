@@ -2,6 +2,7 @@ package com.rayed.tdd.template;
 
 import com.rayed.tdd.exceptions.MissingValueException;
 import com.rayed.tdd.parser.TemplateParser;
+import com.rayed.tdd.segments.Segment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,10 +17,6 @@ public class Template {
     private String templateText;
     private Map<String, String> templateVariables;
 
-    public static boolean isVariable(String segment) {
-        return segment.startsWith("${") && segment.endsWith("}");
-    }
-
     public Template(String templateText) {
         this.templateText = templateText;
         this.templateVariables = new HashMap<>();
@@ -31,31 +28,15 @@ public class Template {
 
     public String evaluate() {
         TemplateParser parser = new TemplateParser();
-        List<String> segments = parser.parse(templateText);
+        List<Segment> segments = parser.parseSegments(templateText);
         return concatenate(segments);
     }
 
-    private String concatenate(List<String> segments) {
+    private String concatenate(List<Segment> segments) {
         StringBuilder result = new StringBuilder();
-        for (String segment : segments) {
-            append(segment, result);
+        for (Segment segment : segments) {
+            result.append(segment.evaluate(templateVariables));
         }
         return result.toString();
-    }
-
-    private void append(String segment, StringBuilder result) {
-        if (isVariable(segment)) {
-            evaluateVariable(segment, result);
-        } else {
-            result.append(segment);
-        }
-    }
-
-    private void evaluateVariable(String segment, StringBuilder result) {
-        String key = segment.substring(2, segment.length() - 1);
-        if (!templateVariables.containsKey(key)) {
-            throw new MissingValueException("No value for " + segment);
-        }
-        result.append(templateVariables.get(key));
     }
 }
