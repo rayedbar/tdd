@@ -1,6 +1,5 @@
 package com.rayed.tdd.template;
 
-import com.rayed.tdd.segments.PlainText;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

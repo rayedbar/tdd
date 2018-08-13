@@ -1,8 +1,8 @@
-package com.rayed.tdd.parser;
+package com.rayed.tdd.template;
 
-import com.rayed.tdd.segments.PlainText;
-import com.rayed.tdd.segments.Segment;
-import com.rayed.tdd.segments.Variable;
+import com.rayed.tdd.template.PlainText;
+import com.rayed.tdd.template.Segment;
+import com.rayed.tdd.template.Variable;
 
 import java.util.ArrayList;
 import java.util.List;

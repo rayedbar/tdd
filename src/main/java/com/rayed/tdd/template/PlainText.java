@@ -1,4 +1,4 @@
-package com.rayed.tdd.segments;
+package com.rayed.tdd.template;
 
 import java.util.Map;
 

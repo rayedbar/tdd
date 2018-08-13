@@ -1,6 +1,5 @@
 package com.rayed.tdd.template;
 
-import com.rayed.tdd.exceptions.MissingValueException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

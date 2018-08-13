@@ -1,9 +1,5 @@
 package com.rayed.tdd.template;
 
-import com.rayed.tdd.exceptions.MissingValueException;
-import com.rayed.tdd.parser.TemplateParser;
-import com.rayed.tdd.segments.Segment;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

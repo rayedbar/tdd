@@ -1,4 +1,4 @@
-package com.rayed.tdd.exceptions;
+package com.rayed.tdd.template;
 
 /**
  * @author rayed

@@ -1,9 +1,5 @@
 package com.rayed.tdd.template;
 
-import com.rayed.tdd.parser.TemplateParser;
-import com.rayed.tdd.segments.PlainText;
-import com.rayed.tdd.segments.Segment;
-import com.rayed.tdd.segments.Variable;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

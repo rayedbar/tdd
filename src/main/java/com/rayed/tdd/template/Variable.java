@@ -1,6 +1,4 @@
-package com.rayed.tdd.segments;
-
-import com.rayed.tdd.exceptions.MissingValueException;
+package com.rayed.tdd.template;
 
 import java.util.Map;
 
