@@ -21,7 +21,7 @@ public class TemplatePerformanceTest {
     }
 
     private void buildTemplate() {
-        StringBuffer text = new StringBuffer(10000);
+        StringBuilder text = new StringBuilder(10000);
         for (int i = 0, var = 1; i < 100; i++) {
             text.append(" template ");
             if (i % 5 == 0) {
@@ -42,7 +42,7 @@ public class TemplatePerformanceTest {
     public void templateWith1000WordsAnd20Variables() {
         long expected = 200L;
         long time = System.currentTimeMillis();
-        String result = template.evaluate();
+        template.evaluate();
         time = System.currentTimeMillis() - time;
         assertTrue(time <= expected, "Rendering the template took " + time + "ms while the target was " +
                 expected + "ms");

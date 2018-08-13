@@ -1,10 +1,16 @@
 package com.rayed.tdd.parser;
 
+import com.rayed.tdd.segments.PlainText;
+import com.rayed.tdd.segments.Segment;
+import com.rayed.tdd.segments.Variable;
+import com.rayed.tdd.template.Template;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.rayed.tdd.template.Template.*;
 
 /**
  * @author rayed
@@ -12,11 +18,25 @@ import java.util.regex.Pattern;
  */
 public class TemplateParser {
 
+    public List<Segment> parseSegments(String template) {
+        List<Segment> segments = new ArrayList<>();
+        List<String> segmentStrings = parse(template);
+
+        for (String segmentString : segmentStrings) {
+            if (isVariable(segmentString)) {
+                segments.add(new Variable(segmentString.substring(2, segmentString.length() - 1)));
+            } else {
+                segments.add(new PlainText(segmentString));
+            }
+        }
+
+        return segments;
+    }
+
     public List<String> parse(String template) {
         List<String> segments = new ArrayList<>();
 
         int index = collectSegments(segments, template);
-
         addTail(segments, template, index);
         addEmptyStringIfTemplateIsEmpty(segments);
 

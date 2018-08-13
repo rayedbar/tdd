@@ -3,12 +3,9 @@ package com.rayed.tdd.template;
 import com.rayed.tdd.exceptions.MissingValueException;
 import com.rayed.tdd.parser.TemplateParser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author rayed
@@ -17,58 +14,48 @@ import java.util.regex.Pattern;
 public class Template {
 
     private String templateText;
-    private Map<String, String> variables;
+    private Map<String, String> templateVariables;
+
+    public static boolean isVariable(String segment) {
+        return segment.startsWith("${") && segment.endsWith("}");
+    }
 
     public Template(String templateText) {
         this.templateText = templateText;
-        this.variables = new HashMap<>();
+        this.templateVariables = new HashMap<>();
     }
 
     public void set(String variable, String value) {
-        this.variables.put(variable, value);
+        this.templateVariables.put(variable, value);
     }
 
     public String evaluate() {
         TemplateParser parser = new TemplateParser();
         List<String> segments = parser.parse(templateText);
+        return concatenate(segments);
+    }
 
+    private String concatenate(List<String> segments) {
         StringBuilder result = new StringBuilder();
         for (String segment : segments) {
             append(segment, result);
         }
-
         return result.toString();
     }
 
     private void append(String segment, StringBuilder result) {
-        if (segment.startsWith("${") && segment.endsWith("}")) {
-            String key = segment.substring(2, segment.length() - 1);
-            if (!variables.containsKey(key)) {
-                throw new MissingValueException("No value for " + segment);
-            }
-            result.append(variables.get(key));
+        if (isVariable(segment)) {
+            evaluateVariable(segment, result);
         } else {
             result.append(segment);
         }
     }
 
-    private String substituteVariablesWithValues() {
-        String result = templateText;
-        for (Map.Entry<String, String> entry : variables.entrySet()) {
-            String regex = "\\$\\{" + entry.getKey() + "\\}";
-            result = result.replaceAll(regex, entry.getValue());
+    private void evaluateVariable(String segment, StringBuilder result) {
+        String key = segment.substring(2, segment.length() - 1);
+        if (!templateVariables.containsKey(key)) {
+            throw new MissingValueException("No value for " + segment);
         }
-        return result;
-    }
-
-    private void checkForMissingValues(String result) {
-        Matcher matcher = Pattern.compile("\\$\\{.+?\\}").matcher(result);
-        List<String> matches = new ArrayList<>();
-        while (matcher.find()) {
-            matches.add(matcher.group());
-        }
-        if (!matches.isEmpty()) {
-            throw new MissingValueException("No value for " + String.join(", ", matches));
-        }
+        result.append(templateVariables.get(key));
     }
 }

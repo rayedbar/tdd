@@ -1,7 +1,9 @@
 package com.rayed.tdd.template;
 
 import com.rayed.tdd.parser.TemplateParser;
-import org.junit.jupiter.api.Assertions;
+import com.rayed.tdd.segments.PlainText;
+import com.rayed.tdd.segments.Segment;
+import com.rayed.tdd.segments.Variable;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -31,6 +33,13 @@ public class TemplateParserTest {
     public void parseMultipleVariables() {
         List<String> segments = parse("${a}:${b}:${c}");
         assertSegments(segments, "${a}", ":", "${b}", ":", "${c}");
+    }
+
+    @Test
+    public void parseTemplateIntoSegmentObjects() {
+        TemplateParser parser = new TemplateParser();
+        List<Segment> segments = parser.parseSegments("a ${b} c ${d}");
+        assertSegments(segments, new PlainText("a "), new Variable("b"), new PlainText(" c "), new Variable("d"));
     }
 
     private List<String> parse(String template) {
