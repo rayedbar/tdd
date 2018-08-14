@@ -15,23 +15,8 @@ import java.util.regex.Pattern;
  */
 public class TemplateParser {
 
-    public List<Segment> parseSegments(String template) {
+    public List<Segment> parse(String template) {
         List<Segment> segments = new ArrayList<>();
-        List<String> segmentStrings = parse(template);
-
-        for (String segmentString : segmentStrings) {
-            if (isVariable(segmentString)) {
-                segments.add(new Variable(segmentString.substring(2, segmentString.length() - 1)));
-            } else {
-                segments.add(new PlainText(segmentString));
-            }
-        }
-
-        return segments;
-    }
-
-    public List<String> parse(String template) {
-        List<String> segments = new ArrayList<>();
 
         int index = collectSegments(segments, template);
         addTail(segments, template, index);
@@ -40,7 +25,7 @@ public class TemplateParser {
         return segments;
     }
 
-    private int collectSegments(List<String> segments, String template) {
+    private int collectSegments(List<Segment> segments, String template) {
         String regex = "\\$\\{[^}]*?\\}";
         Matcher matcher = Pattern.compile(regex).matcher(template);
 
@@ -54,29 +39,25 @@ public class TemplateParser {
         return index;
     }
 
-    private void addPrecedingText(List<String> segments, String template, Matcher matcher, int index) {
+    private void addPrecedingText(List<Segment> segments, String template, Matcher matcher, int index) {
         if (index != matcher.start()) {
-            segments.add(template.substring(index, matcher.start()));
+            segments.add(new PlainText(template.substring(index, matcher.start())));
         }
     }
 
-    private void addVariable(List<String> segments, String template, Matcher matcher) {
-        segments.add(template.substring(matcher.start(), matcher.end()));
+    private void addVariable(List<Segment> segments, String template, Matcher matcher) {
+        segments.add(new Variable(template.substring(matcher.start() + 2, matcher.end() - 1)));
     }
 
-    private void addTail(List<String> segments, String template, int index) {
+    private void addTail(List<Segment> segments, String template, int index) {
         if (index < template.length()) {
-            segments.add(template.substring(index));
+            segments.add(new PlainText(template.substring(index)));
         }
     }
 
-    private void addEmptyStringIfTemplateIsEmpty(List<String> segments) {
+    private void addEmptyStringIfTemplateIsEmpty(List<Segment> segments) {
         if (segments.isEmpty()) {
-            segments.add("");
+            segments.add(new PlainText(""));
         }
-    }
-
-    private boolean isVariable(String segment) {
-        return segment.startsWith("${") && segment.endsWith("}");
     }
 }
