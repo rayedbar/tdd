@@ -25,14 +25,17 @@ public class Template {
     public String evaluate() {
         TemplateParser parser = new TemplateParser();
         List<Segment> segments = parser.parse(templateText);
+
         return concatenate(segments);
     }
 
     private String concatenate(List<Segment> segments) {
         StringBuilder result = new StringBuilder();
+
         for (Segment segment : segments) {
             result.append(segment.evaluate(templateVariables));
         }
+
         return result.toString();
     }
 }
